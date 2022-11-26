@@ -47,7 +47,7 @@ typedef struct shape_4s {
 } shape_4d;
 
 
-void analyse_events(sfRenderWindow *window, sfEvent event, vect4f *angle);
+void analyse_events(sfRenderWindow *window, sfEvent event, sfVector3f *angle);
 float absol(float b);
 line_t *init_line(float x1, float y1, float x2, float y2);
 void init_pixels(line_t *line);

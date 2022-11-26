@@ -6,7 +6,7 @@
 */
 #include "my.h"
 
-void analyse_events(sfRenderWindow *window, sfEvent event, vect4f *angle)
+void analyse_events(sfRenderWindow *window, sfEvent event, sfVector3f *angle)
 {
     if (event.type == sfEvtClosed)
         sfRenderWindow_close(window);
