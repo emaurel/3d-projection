@@ -6,7 +6,7 @@
 */
 #include "my.h"
 
-void analyse_events(sfRenderWindow *window, sfEvent event, sfVector3f *angle)
+void analyse_events(sfRenderWindow *window, sfEvent event, sfVector3f *angle, vect4f *angles_4d)
 {
     if (event.type == sfEvtClosed)
         sfRenderWindow_close(window);
@@ -29,5 +29,7 @@ void analyse_events(sfRenderWindow *window, sfEvent event, sfVector3f *angle)
         angle->x = 0;
         angle->z = 0;
     }
-
+    angles_4d->x = angle->x;
+    angles_4d->y = angle->y;
+    angles_4d->z = angle->z;
 }

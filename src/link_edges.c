@@ -9,7 +9,7 @@
 sfVertexArray *link_edges(sfVector2f **point_list, int **edge_table, int list_size)
 {
     sfVertexArray *array = sfVertexArray_create();
-    sfVertexArray_setPrimitiveType(array, sfLinesStrip);
+    sfVertexArray_setPrimitiveType(array, sfLines);
     for (int i = 0; i < list_size; i++) {
         for (int j = 0; j < 3; j++) {
             if(j == 0) {

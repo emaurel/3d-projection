@@ -47,7 +47,7 @@ typedef struct shape_4s {
 } shape_4d;
 
 
-void analyse_events(sfRenderWindow *window, sfEvent event, sfVector3f *angle);
+void analyse_events(sfRenderWindow *window, sfEvent event, sfVector3f *angle, vect4f *angle_4d);
 float absol(float b);
 line_t *init_line(float x1, float y1, float x2, float y2);
 void init_pixels(line_t *line);
@@ -70,3 +70,11 @@ shape_4d *tesseract(float size);
 sfVector3f **project4d_to_3d(vect4f **pointlist, int list_size, vect4f cam);
 void rotate_4d(shape_4d *cube, vect4f *angle, int nb_edges);
 void change_cam_4d(sfVector2f **projection, sfVector3f **projection_3d, vect4f **pointlist, vect4f cam_4d, sfVector3f cam_3d, int list_size);
+void change_color(sfVertexArray *array, sfColor color);
+shape_4d *pyramide_cubique(float size);
+sfVector2f *racine_nieme(int k, int n);
+shape *create_circle(float rayon, int resolution);
+int mod(int a, int b);
+shape *create_sphere(int rayon, int res, int res3d);
+shape_4d *create_sphere_4d(int rayon, int res, int res3d);
+shape_4d *create_hypersphere(int rayon, int res, int res3d, int res4d);
