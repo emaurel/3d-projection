@@ -12,64 +12,42 @@ int main(void)
     sfVideoMode mode = {800, 600, 32};
     sfRenderWindow *window = NULL;
     sfEvent event;
-    line_t *line = init_line(400, 300, 400, 0);
-    shape *cube_f = cube(200);
-    shape *pyramid_f = pyramid(-100);
-    shape_4d *tesseract_f = tesseract(100);
-    shape_4d *pyra_cube = pyramide_cubique(100);
-    sfVector3f cam = {-300, -300, 1000};
-    vect4f cam4d = {0, 0, -10, 200};
-    /* sfVector3f **projection3d_tesseract = project4d_to_3d(tesseract_f->points_4d, 16, cam4d);
-    sfVector2f **projection_tesseract = project3d_to_2d(projection3d_tesseract, 16, cam);
-    sfVertexArray *array_tesseract = link_edges(projection_tesseract, tesseract_f->edge_table, 16);
-
-    sfVector3f **projection3d_pyra_cube = project4d_to_3d(pyra_cube->points_4d, 9, cam4d);
-    sfVector2f **projection_pyra_cube = project3d_to_2d(projection3d_pyra_cube, 9, cam);
-    sfVertexArray *array_pyra_cube = link_edges(projection_pyra_cube, pyra_cube->edge_table, 9);
- */
-    sfVector2f **projection_cube = project3d_to_2d(cube_f->points_3d, 8, cam);
-    sfVertexArray *array_cube = link_edges(projection_cube, cube_f->edge_table, 8);
-
-    sfVector2f **projection_pyra = project3d_to_2d(cube_f->points_3d, 5, cam);
-    sfVertexArray *array_pyra = link_edges(projection_cube, cube_f->edge_table, 5);
-    sfVector3f angles = {0, 0, 0};
-    vect4f angles_4d = {0, 0, 0, 0.01};
+    int nb_button = 3;
+    game *jeu = init_game(nb_button);
+ 
     sfClock *clock = sfClock_create();
     sfTime time;
 
-/*     int resolution = 20;
-    int nb_cercle = 10;
+/*     int resolution = 30;
+    int nb_cercle = 30;
     int nb_sphere = 10;
     shape *cercle = create_circle(100, resolution);
     sfVector2f **projection_cercle = project3d_to_2d(cercle->points_3d, resolution, cam);
     sfVertexArray *array_cercle = link_edges(projection_cercle, cercle->edge_table, resolution);
 
-    shape *sphere = create_sphere(200, resolution, nb_cercle);
-    sfVector2f **projection_sphere = project3d_to_2d(sphere->points_3d, resolution * nb_cercle, cam);
-    sfVertexArray *array_sphere = link_edges(projection_sphere, sphere->edge_table, resolution * nb_cercle);
-
     shape_4d *sphere_4d = create_sphere_4d(200, resolution, nb_cercle);
     sfVector3f **projection3d_sphere = project4d_to_3d(sphere_4d->points_4d, resolution * nb_cercle, cam4d);
     sfVector2f **projection_sphere_4d = project3d_to_2d(projection3d_sphere, resolution * nb_cercle, cam);
-    sfVertexArray *array_sphere_4d = link_edges(projection_sphere_4d, sphere_4d->edge_table, resolution * nb_cercle);
+    sfVertexArray *array_sphere_4d = link_edges(projection_sphere_4d, sphere_4d->edge_table, resolution * nb_cercle); */
 
 
-    shape_4d *hypersphere = create_hypersphere(150, resolution, nb_cercle, nb_sphere);
+    /*shape_4d *hypersphere = create_hypersphere(150, resolution, nb_cercle, nb_sphere);
     sfVector3f **projection_3d_hypersphere = project4d_to_3d(hypersphere->points_4d, resolution * nb_cercle * nb_sphere, cam4d);
     sfVector2f **projection_hypersphere = project3d_to_2d(projection_3d_hypersphere, resolution * nb_cercle * nb_sphere, cam);
     sfVertexArray *array_hypersphere = link_edges(projection_hypersphere, hypersphere->edge_table, resolution * nb_cercle * nb_sphere);
-    */float seconds;
+    */
+    float seconds;
     //offset_lines(cube_l, 100, 100);
-    window = sfRenderWindow_create(mode, "3d_projection", sfResize | sfClose, NULL);
+    window = sfRenderWindow_create(mode, "3d_projection", sfClose, NULL);
     while (sfRenderWindow_isOpen(window)) {
         time = sfClock_getElapsedTime(clock);
         seconds = time.microseconds / 1000000.0;
-
         while (sfRenderWindow_pollEvent(window, &event)) {
-            analyse_events(window, event, &angles, &angles_4d);
+            analyse_events(window, event, jeu);
         }
+
         if (seconds > 0.01) {
-/*             rotate_4d(tesseract_f, &angles_4d, 16);
+            /* rotate_4d(tesseract_f, &angles_4d, 16);
             change_cam_4d(projection_tesseract, projection3d_tesseract, tesseract_f->points_4d, cam4d, cam, 16);
             change_edges(array_tesseract, projection_tesseract, tesseract_f->edge_table, 16);
             rotate_4d(pyra_cube, &angles_4d, 9);
@@ -88,26 +66,28 @@ int main(void)
             change_cam(projection_pyra, pyramid_f->points_3d, cam, 5);
             change_edges(array_pyra, projection_pyra, pyramid_f->edge_table, 5);
             */
-            rotate(cube_f, &angles, 8);
-            change_cam(projection_cube, cube_f->points_3d, cam, 8);
-            change_edges(array_cube, projection_cube, cube_f->edge_table, 8);
-
-
-            /*rotate(sphere, &angles, resolution * nb_cercle);
-            change_cam(projection_sphere, sphere->points_3d, cam, resolution * nb_cercle);
-            change_edges(array_sphere, projection_sphere, sphere->edge_table, resolution * nb_cercle); */
+            for (int i = 0; i < jeu->nb_shape; i++) {
+                if (jeu->object_list[i] != NULL) {
+                rotate(jeu->object_list[i], jeu->angles_3d, jeu->object_list[i]->nb_points, jeu->cam_3d);
+                }
+            }
 
             sfClock_restart(clock);
         }
         //change_color(array_cube, sfGreen);
         //change_color(array_pyra, sfRed);
         sfRenderWindow_clear(window, sfWhite);
-        sfRenderWindow_drawVertexArray(window, array_cube, NULL);
-        //sfRenderWindow_drawVertexArray(window, array_pyra, NULL);
+        for (int i = 0; i < jeu->nb_shape; i++) {
+            if (jeu->object_list[i]->nb_points != NULL)
+                sfRenderWindow_drawVertexArray(window, jeu->object_list[i]->array, NULL);
+        }
+        for (int i = 0; i < nb_button; i++)
+            draw_button(jeu->button_list[i], window);
+               
+        //sfRenderWindow_drawVertexArray(window, sphere->array, NULL);
         //sfRenderWindow_drawVertexArray(window, array_tesseract, NULL);
         //sfRenderWindow_drawVertexArray(window, array_pyra_cube, NULL);
         //sfRenderWindow_drawVertexArray(window, array_cercle, NULL);
-        //sfRenderWindow_drawVertexArray(window, array_sphere, NULL);
         //sfRenderWindow_drawVertexArray(window, array_sphere_4d, NULL);
         //sfRenderWindow_drawVertexArray(window, array_hypersphere, NULL);
         //draw_2dshape(cube_l, window);

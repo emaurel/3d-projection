@@ -6,30 +6,36 @@
 */
 #include "my.h"
 
-void analyse_events(sfRenderWindow *window, sfEvent event, sfVector3f *angle, vect4f *angles_4d)
+void analyse_events(sfRenderWindow *window, sfEvent event, game *jeu)
 {
     if (event.type == sfEvtClosed)
         sfRenderWindow_close(window);
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
         sfRenderWindow_close(window);
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyRight)
-        angle->y += -0.01;
+        jeu->angles_3d->y += -0.01;
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyLeft)
-        angle->y += 0.01;
+        jeu->angles_3d->y += 0.01;
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyUp)
-        angle->x += 0.01;
+        jeu->angles_3d->x += 0.01;
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyDown)
-        angle->x += -0.01;
+        jeu->angles_3d->x += -0.01;
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyX)
-        angle->z += 0.01;
+        jeu->angles_3d->z += 0.01;
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyC)
-        angle->z += -0.01;
+        jeu->angles_3d->z += -0.01;
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeySpace) {
-        angle->y = 0;
-        angle->x = 0;
-        angle->z = 0;
+        jeu->angles_3d->y = 0;
+        jeu->angles_3d->x = 0;
+        jeu->angles_3d->z = 0;
     }
-    angles_4d->x = angle->x;
-    angles_4d->y = angle->y;
-    angles_4d->z = angle->z;
+    /* jeu->angles_4d->x = jeu->angles_3d->x;
+    jeu->angles_4d->y = jeu->angles_3d->y;
+    jeu->angles_4d->z = jeu->angles_3d->z; */
+    
+
+    if (event.type == sfEvtMouseButtonPressed) {
+
+        check_click(jeu, window);
+}
 }

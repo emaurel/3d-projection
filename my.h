@@ -16,12 +16,6 @@
 #include <math.h>
 #define pi 3.1415
 
-typedef struct framebuffer_s {
-unsigned int width;
-unsigned int height;
-sfColor *pixels;
-} framebuffer;
-
 typedef struct line_s {
     sfRectangleShape *rect;
     sfVector2f start;
@@ -47,7 +41,34 @@ typedef struct shape_4s {
 } shape_4d;
 
 
-void analyse_events(sfRenderWindow *window, sfEvent event, sfVector3f *angle, vect4f *angle_4d);
+typedef struct object_3ds {
+    shape *forme;
+    sfVector2f **projection;
+    sfVertexArray *array;
+    int nb_points;
+} object_3d;
+
+typedef struct button_s {
+    sfText *text;
+    sfRectangleShape *rect;
+    int clicked;
+    sfVector2f *pos;
+    int shape_nb;
+} button;
+
+
+typedef struct {
+    button **button_list;
+    object_3d **object_list;
+    sfVector3f *cam_3d;
+    vect4f *cam_4d;
+    sfVector3f *angles_3d;
+    vect4f *angles_4d;
+    int nb_shape;
+} game;
+
+
+void analyse_events(sfRenderWindow *window, sfEvent event, game *jeu);
 float absol(float b);
 line_t *init_line(float x1, float y1, float x2, float y2);
 void init_pixels(line_t *line);
@@ -61,7 +82,7 @@ void offset_lines(line_t **line_list, float x_off, float y_off);
 void draw_points(sfVector2f **point_list, int size, sfRenderWindow *window);
 void change_cam(sfVector2f **projection, sfVector3f **pointlist, sfVector3f cam, int list_size);
 void change_edges(sfVertexArray *array, sfVector2f **point_list, int **edge_table, int list_size);
-void rotate(shape *cube, sfVector3f *angle, int nb_edges);
+void rotate(object_3d *object, sfVector3f *angle, int nb_edges, sfVector3f *cam);
 sfVertex *create_vertex(float x, float y);
 int *associate_edges(int a, int b, int c, int d);
 shape *pyramid(float size);
@@ -78,3 +99,11 @@ int mod(int a, int b);
 shape *create_sphere(int rayon, int res, int res3d);
 shape_4d *create_sphere_4d(int rayon, int res, int res3d);
 shape_4d *create_hypersphere(int rayon, int res, int res3d, int res4d);
+int my_strlen(char *s);
+int is_str_eq(char *s1, char *s2);
+object_3d *create_3d(char *object_type, int size, int resolution, sfVector3f *cam);
+void destroy_3d(object_3d *object, int nb_points);
+void draw_button(button *bouton, sfRenderWindow *window);
+button *create_button(char *text, int x, int y);
+void check_click(game *jeu, sfRenderWindow *window);
+game *init_game(int nb_shape);
